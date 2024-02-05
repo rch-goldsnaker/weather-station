@@ -1,6 +1,5 @@
-'use client'
-import Spline from "@splinetool/react-spline";
-import { Footer, Header, Navbar } from "./components";
+import { Footer, Header, Navbar } from "../components";
+import SplineComponent from "../components/SplineComponent";
 
 export default function Home() {
   return (
@@ -12,9 +11,7 @@ export default function Home() {
         </div>
         <Footer />
       </div>
-      <div className="h-screen">
-        <Spline scene="https://prod.spline.design/r8n9DcRmCAX8oliX/scene.splinecode" />
-      </div>
+      <SplineComponent/>
     </div>
   );
 }
