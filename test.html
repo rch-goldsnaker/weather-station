@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+    <script type="text/javascript">
+        function WebSocketAPIExample() {
+            console.log('start')
+            var token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyY2guZ29sZHNuYWtlckBnbWFpbC5jb20iLCJ1c2VySWQiOiIyN2VkZjVmMC1iZmUwLTExZWUtODYyZC1jMWUwYTUzMTEyYTAiLCJzY29wZXMiOlsiVEVOQU5UX0FETUlOIl0sInNlc3Npb25JZCI6ImQ4OTRmYjY2LTE5ZTMtNDU5Mi1iNWM3LTA0MGIxMzk4NGI5ZSIsImlzcyI6InRoaW5nc2JvYXJkLmNsb3VkIiwiaWF0IjoxNzA3NjYwNDI1LCJleHAiOjE3MDc2ODkyMjUsImZpcnN0TmFtZSI6IlJvZ2VyIiwibGFzdE5hbWUiOiJDaHVuZyIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwiaXNCaWxsaW5nU2VydmljZSI6ZmFsc2UsInByaXZhY3lQb2xpY3lBY2NlcHRlZCI6dHJ1ZSwidGVybXNPZlVzZUFjY2VwdGVkIjp0cnVlLCJ0ZW5hbnRJZCI6IjI2YTgyZjgwLWJmZTAtMTFlZS04NjJkLWMxZTBhNTMxMTJhMCIsImN1c3RvbWVySWQiOiIxMzgxNDAwMC0xZGQyLTExYjItODA4MC04MDgwODA4MDgwODAifQ.sHt36Im2Cu2uK7thYb_3FdNlE5ATBM6L5Yaq29Bk_QdAvhrOMa3elIXY5dPgb53NtiW6GEY8xNDyvaDgcILk4g";
+            var entityId = "dae74840-c21b-11ee-a0e0-15431c20b1f9";
+            var webSocket = new WebSocket("wss://thingsboard.cloud/api/ws");
+            console.log(webSocket)
+
+            webSocket.onopen = function () {
+                var object = {
+                    authCmd: {
+                        cmdId: 0,
+                        token: token
+                    },
+                    cmds: [
+                        {
+                            entityType: "ASSET",
+                            entityId: entityId,
+                            scope: "LATEST_TELEMETRY",
+                            cmdId: 10,
+                            type: "TIMESERIES"
+                        }
+                    ]
+                };
+                var data = JSON.stringify(object);
+                webSocket.send(data);
+                alert("Message is sent: " + data);
+            };
+
+            webSocket.onmessage = function (event) {
+                var received_msg = event.data;
+                alert("Message is received: " + received_msg);
+            };
+
+            webSocket.onclose = function (event) {
+                alert("Connection is closed!");
+            };
+        }
+    </script>
+
+</head>
+<body>
+
+<div id="sse">
+    <a href="javascript:WebSocketAPIExample()">Run WebSocket</a>
+</div>
+
+</body>
+</html>
