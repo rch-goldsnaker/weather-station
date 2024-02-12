@@ -17,7 +17,8 @@ import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
-import { signUpWithEmailAndPassword } from "../../app/auth-server-action/actions";
+import { signUpWithEmailAndPassword } from "@/app/auth/actions/server";
+import { useTransition } from "react";
 
 const FormSchema = z
   .object({
@@ -34,6 +35,7 @@ const FormSchema = z
     path: ["confirm"],
   });
 export default function RegisterForm() {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -43,32 +45,34 @@ export default function RegisterForm() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const result = await signUpWithEmailAndPassword(data);
-    const { error } = result;
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    startTransition(async () => {
+      const result = await signUpWithEmailAndPassword(data);
+      const { error } = result;
 
-    if (error?.message) {
-      console.log(error.message);
-      toast({
-        variant: "destructive",
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{error.message}</code>
-          </pre>
-        ),
-      });
-    } else {
-      console.log("succes");
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">Successfully register</code>
-          </pre>
-        ),
-      });
-    }
+      if (error?.message) {
+        console.log(error.message);
+        toast({
+          variant: "destructive",
+          title: "You submitted the following values:",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">{error.message}</code>
+            </pre>
+          ),
+        });
+      } else {
+        console.log("succes");
+        toast({
+          title: "You submitted the following values:",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">Successfully register</code>
+            </pre>
+          ),
+        });
+      }
+    });
   }
 
   return (
@@ -88,7 +92,7 @@ export default function RegisterForm() {
                   onChange={field.onChange}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="flex justify-start" />
             </FormItem>
           )}
         />
@@ -107,7 +111,7 @@ export default function RegisterForm() {
                 />
               </FormControl>
 
-              <FormMessage />
+              <FormMessage className="flex justify-start" />
             </FormItem>
           )}
         />
@@ -128,13 +132,13 @@ export default function RegisterForm() {
                 />
               </FormControl>
 
-              <FormMessage />
+              <FormMessage className="flex justify-start" />
             </FormItem>
           )}
         />
         <Button type="submit" className="w-full flex gap-2">
           Register
-          <Icons.spinner className={cn("animate-spin")} />
+          <Icons.spinner className={cn("animate-spin", { hidden: !isPending })} />
         </Button>
       </form>
     </Form>

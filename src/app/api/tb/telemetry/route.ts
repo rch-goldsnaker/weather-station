@@ -31,8 +31,6 @@ export async function GET(request: NextRequest ) {
       password,
     });
 
-    console.log(responseLogin)
-
     //THINGSBOARD USER API
 
     const url = `/api/plugins/telemetry/${entityType}/${entityId}/values/timeseries?keys=${keys}&useStrictDataTypes=${useStrictDataTypes}`;
@@ -43,8 +41,6 @@ export async function GET(request: NextRequest ) {
         "X-Authorization": `Bearer ${responseLogin.data.token}`,
       },
     });
-
-    console.log('responseTelemetry',responseTelemetry)
 
     return NextResponse.json({ ...responseTelemetry.data });
   } catch (error) {

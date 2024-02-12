@@ -1,28 +1,54 @@
+// "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { signOut } from '@/app/auth-server-action/actions'
+import { signOut } from "@/app/auth/actions/server";
 import { Icons } from "./icons";
+import { ProfileModal } from "./modals/ProfileModal";
+import { SettingModal } from "./modals/SettingModal";
+import { ProfileDrawer } from "./drawers/ProfileDrawer";
+import { SettingDrawer } from "./drawers/SettingDrawer";
+import { ProfileForm } from "@/components/forms/ProfileForm";
 
 export function Navbar() {
   return (
     <div className="flex flex-col mt-3 mx-8">
       <div className="flex justify-between">
-        <div className="flex items-center gap-6">
-          <h3 className="">08:30 PM</h3>
-          <h3 className="hidden md:block">29/1/2024</h3>
-        </div>
-        <div className="hidden md:block">
-          <Icons.sunset className="w-12 h-12"/>
-        </div>
-        <div className="flex items-center gap-6">
-          <Link href={"https://github.com/rch-goldsnaker"}>
-            <Icons.gitHub className="w-6 h-6 hidden md:block"/>
+        <div className="flex items-center">
+          <Link href={"/"}>
+            <Icons.sunset className="w-12 h-12" />
           </Link>
-          <Icons.user className="w-6 h-6 hidden md:block"/>
-          <form action={signOut}>
-            <Button>Sign Out</Button>
-          </form>
-          <Icons.menu className="w-6 h-6 hidden md:block"/>
+        </div>
+        <div className="flex items-center">
+          <ul className="flex md:gap-1 items-center">
+            <li className="hidden md:block">
+              <ProfileModal />
+            </li>
+            <li className="md:hidden">
+              <ProfileDrawer />
+            </li>
+            <li className="hidden md:block">
+              <SettingModal />
+            </li>
+            <li className="md:hidden">
+              <SettingDrawer />
+            </li>
+            <li>
+              <Link href={"https://github.com/rch-goldsnaker"} target="_blank">
+                <Button variant={"ghost"} className="gap-1">
+                  <Icons.gitHub className="h-5 w-5" />
+                  <p className="hidden md:block">Github</p>
+                </Button>
+              </Link>
+            </li>
+            <li>
+              <form action={signOut}>
+                <Button className="gap-1">
+                  <Icons.logout className="h-5 w-5" />
+                  <p className="hidden md:block">Sign Out</p>
+                </Button>
+              </form>
+            </li>
+          </ul>
         </div>
       </div>
       <div className="w-full mt-2 h-[2px] bg-gradient-to-r from-transparent via-[#c3cbd8] to-transparent"></div>

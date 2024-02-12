@@ -15,7 +15,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
-import { signInWithEmailAndPassword } from "../../app/auth-server-action/actions";
+import { signInWithEmailAndPassword } from "@/app/auth/actions/server";
 import { useTransition } from "react";
 
 const FormSchema = z.object({
@@ -36,7 +36,7 @@ export default function SignInForm() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(data: z.infer<typeof FormSchema>) {
     startTransition(async () => {
       const result = await signInWithEmailAndPassword(data);
       const { error } = result;
@@ -83,7 +83,7 @@ export default function SignInForm() {
                   onChange={field.onChange}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="flex justify-start"/>
             </FormItem>
           )}
         />
@@ -102,7 +102,7 @@ export default function SignInForm() {
                 />
               </FormControl>
 
-              <FormMessage />
+              <FormMessage className="flex justify-start"/>
             </FormItem>
           )}
         />

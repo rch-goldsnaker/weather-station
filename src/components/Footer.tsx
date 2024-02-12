@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Card } from "./Card";
 import { Icons } from "./icons";
 
@@ -17,20 +18,91 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
-import useGetTelemetryByEntityId from "@/hooks/useGetTelemetryByEntityId";
+import { loginTb } from "@/app/actions";
+import { readSetting } from "./modals/actions";
 
 export function Footer() {
-  const objReq = {
-    entityType: "DEVICE",
-    entityId: "092003f0-c21c-11ee-9761-21e4bffd617b",
-    keys: "",
-    useStrictDataTypes: "",
-  };
+  const [tempIn, setTempIn] = useState(0);
+  const [tempOut, setTempOut] = useState(0);
+  const [humIn, setHumIn] = useState(0);
+  const [humOut, setHumOut] = useState(0);
+  const [pressure, setPressure] = useState(0);
+  const [rainfall, setRainfall] = useState(0);
+  const [windDirection,setWindDirection] = useState("NA");
+  const [windSpeed, setWindSpeed] = useState(0);
+  const [windAvg, setWindAvg] = useState(0);
 
-  const { telemetry, loading, error } = useGetTelemetryByEntityId(objReq);
+  useEffect(() => {
+    const fetchLoginData = async () => {
+      try {
+        const login = await loginTb();
+        const setting = await readSetting();
 
-  // console.log(telemetry)
+        const token = login.token;
+        let { entityType, entityId } = setting.data[0];
+        const webSocket = new WebSocket(
+          process.env.NEXT_PUBLIC_TB_WS_URL || ""
+        );
+
+        webSocket.onopen = () => {
+          const object = {
+            authCmd: {
+              cmdId: 0,
+              token: token,
+            },
+            cmds: [
+              {
+                entityType: entityType,
+                entityId: entityId,
+                scope: "LATEST_TELEMETRY",
+                cmdId: 10,
+                type: "TIMESERIES",
+              },
+            ],
+          };
+          const data = JSON.stringify(object);
+          webSocket.send(data);
+        };
+
+        webSocket.onmessage = (event) => {
+          const receivedData = JSON.parse(event.data);
+          const { subscriptionId, data } = receivedData;
+          const {
+            tempIn,
+            tempOut,
+            humIn,
+            humOut,
+            pressure,
+            rainfall,
+            windDirection,
+            windSpeed,
+            windAvg,
+          } = data;
+          setTempIn(tempIn[0][1]);
+          setTempOut(tempOut[0][1]);
+          setHumIn(humIn[0][1]);
+          setHumOut(humOut[0][1]);
+          setPressure(pressure[0][1]);
+          setRainfall(rainfall[0][1]);
+          setWindDirection(windDirection[0][1]);
+          setWindSpeed(windSpeed[0][1]);
+          setWindAvg(windAvg[0][1]);
+        };
+
+        webSocket.onclose = () => {
+          console.log("Connection closed!");
+        };
+
+        // Clean up function
+        return () => {
+          webSocket.close();
+        };
+      } catch (error) {
+        // Manejo de errores si la promesa se rechaza
+      }
+    };
+    fetchLoginData();
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -42,15 +114,15 @@ export function Footer() {
           </div>
           <div className="flex gap-2">
             <p className="text-xl text-[#5f6281]">Direction:</p>
-            <p className="text-xl text-white">SW</p>
+            <p className="text-xl text-white">{windDirection}"</p>
           </div>
           <div className="flex gap-2">
             <p className="text-xl text-[#5f6281]">Speed:</p>
-            <p className="text-xl text-white">13.0 m/s</p>
+            <p className="text-xl text-white">{windSpeed} m/s</p>
           </div>
           <div className="flex gap-2">
             <p className="text-xl text-[#5f6281]">Average:</p>
-            <p className="text-xl text-white">11.8</p>
+            <p className="text-xl text-white">{windAvg}</p>
           </div>
         </div>
         <div className="flex items-end">
@@ -95,8 +167,8 @@ export function Footer() {
           <SwiperSlide>
             <Card
               title="Temperature IN"
-              icon={<Icons.temperature/>}
-              value={78.9}
+              icon={<Icons.temperature />}
+              value={tempIn}
               unit={"°F"}
               texts={["", "Indoor Temperature", ""]}
             />
@@ -104,8 +176,8 @@ export function Footer() {
           <SwiperSlide>
             <Card
               title="Humidity IN"
-              icon={<Icons.droplet/>}
-              value={55}
+              icon={<Icons.droplet />}
+              value={humIn}
               unit={"%"}
               texts={["", "Indoor Humidity", ""]}
             />
@@ -113,8 +185,8 @@ export function Footer() {
           <SwiperSlide>
             <Card
               title="Pressure"
-              icon={<Icons.gauge/>}
-              value={1008.9}
+              icon={<Icons.gauge />}
+              value={pressure}
               unit={"hPa"}
               texts={["", "Absolute Pressure", ""]}
             />
@@ -122,8 +194,8 @@ export function Footer() {
           <SwiperSlide>
             <Card
               title="Rainfall"
-              icon={<Icons.cloudRain/>}
-              value={127.4}
+              icon={<Icons.cloudRain />}
+              value={rainfall}
               unit={"mm"}
               texts={["", "Total", ""]}
             />
@@ -131,8 +203,8 @@ export function Footer() {
           <SwiperSlide>
             <Card
               title="Temperature OUT"
-              icon={<Icons.temperature/>}
-              value={89.0}
+              icon={<Icons.temperature />}
+              value={tempOut}
               unit={"°F"}
               texts={["", "Outdoor Temperature", ""]}
             />
@@ -140,8 +212,8 @@ export function Footer() {
           <SwiperSlide>
             <Card
               title="Humidity OUT"
-              icon={<Icons.droplet/>}
-              value={58}
+              icon={<Icons.droplet />}
+              value={humOut}
               unit={"%"}
               texts={["", "Outdoor Humidity", ""]}
             />
