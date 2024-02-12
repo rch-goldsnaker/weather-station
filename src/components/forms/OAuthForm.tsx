@@ -3,10 +3,26 @@ import { Button } from "@/components/ui/button";
 import React, { useTransition } from "react";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { signInWithOAuthGitHub } from "@/app/auth/actions/client";
+// import { signInWithOAuthGitHub } from "@/app/auth/actions/client";
 import { toast } from "../ui/use-toast";
 
+import createSupabaseClientClient from "@/lib/supabase/client";
+
+
+export async function signInWithOAuthGitHub() {
+  const supabase = await createSupabaseClientClient();
+  const result = await supabase.auth.signInWithOAuth({
+    provider: "github",
+    options: {
+      redirectTo: `${location.origin}/auth/callback`,
+    },
+  });
+  return result;
+}
+
 export default function OAuthForm() {
+
+
 
   async function loginWithGithub() {
       const result = await signInWithOAuthGitHub();

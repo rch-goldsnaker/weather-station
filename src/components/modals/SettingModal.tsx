@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { SettingForm } from "../forms/SettingForm";
-import { readSetting } from "./actions";
+import { readSetting } from "@/actions";
 import { Badge } from "../ui/badge";
 
 export async function SettingModal() {
@@ -51,21 +51,13 @@ export async function SettingModal() {
                 <h1>EntityId:</h1>
                 <Badge>{entityId ? entityId : "NA"}</Badge>
               </div>
-              <div className="flex gap-1">
-                <h1>keys:</h1>
-                <Badge>{keys ? keys : "NA"}</Badge>
-              </div>
-              <div className="flex gap-1">
-                <h1>useStrictDataTypes:</h1>
-                <Badge>{useStrictDataTypes ? useStrictDataTypes : "NA"}</Badge>
-              </div>
             </div>
           </DialogDescription>
         </DialogHeader>
         <SettingForm />
         <DialogFooter>
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
+          <DialogClose asChild className="w-full">
+            <Button type="button" variant="destructive">
               Close
             </Button>
           </DialogClose>

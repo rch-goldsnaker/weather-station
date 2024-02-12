@@ -17,7 +17,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
-import { signUpWithEmailAndPassword } from "@/app/auth/actions/server";
+import { signUpWithEmailAndPassword } from "@/actions";
 import { useTransition } from "react";
 
 const FormSchema = z

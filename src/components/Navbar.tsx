@@ -1,13 +1,11 @@
-// "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/app/auth/actions/server";
+import { signOut } from "@/actions";
 import { Icons } from "./icons";
 import { ProfileModal } from "./modals/ProfileModal";
 import { SettingModal } from "./modals/SettingModal";
 import { ProfileDrawer } from "./drawers/ProfileDrawer";
 import { SettingDrawer } from "./drawers/SettingDrawer";
-import { ProfileForm } from "@/components/forms/ProfileForm";
 
 export function Navbar() {
   return (

@@ -1,3 +1,4 @@
+'use client'
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useGetUserSB } from "@/hooks/useGetUserSB";
 

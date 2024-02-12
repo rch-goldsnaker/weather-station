@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Card } from "./Card";
 import { Icons } from "./icons";
 
-// import Swiper core and required modules
 import {
   Navigation,
   Pagination,
@@ -14,12 +13,11 @@ import {
 } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { loginTb } from "@/app/actions";
-import { readSetting } from "./modals/actions";
+import { loginTb } from "@/actions";
+import { readSetting } from "@/actions";
 
 export function Footer() {
   const [tempIn, setTempIn] = useState(0);
@@ -38,72 +36,74 @@ export function Footer() {
         const login = await loginTb();
         const setting = await readSetting();
 
-        const token = login.token;
-        let { entityType, entityId } = setting.data[0];
-        const webSocket = new WebSocket(
-          process.env.NEXT_PUBLIC_TB_WS_URL || ""
-        );
+        if (setting && setting.data && setting.data.length > 0) {
+          const token = login.token;
+          let { entityType, entityId } = setting.data[0];
+          const webSocket = new WebSocket(
+            process.env.NEXT_PUBLIC_TB_WS_URL || ""
+          );
 
-        webSocket.onopen = () => {
-          const object = {
-            authCmd: {
-              cmdId: 0,
-              token: token,
-            },
-            cmds: [
-              {
-                entityType: entityType,
-                entityId: entityId,
-                scope: "LATEST_TELEMETRY",
-                cmdId: 10,
-                type: "TIMESERIES",
+          webSocket.onopen = () => {
+            const object = {
+              authCmd: {
+                cmdId: 0,
+                token: token,
               },
-            ],
+              cmds: [
+                {
+                  entityType: entityType,
+                  entityId: entityId,
+                  scope: "LATEST_TELEMETRY",
+                  cmdId: 10,
+                  type: "TIMESERIES",
+                },
+              ],
+            };
+            const data = JSON.stringify(object);
+            webSocket.send(data);
           };
-          const data = JSON.stringify(object);
-          webSocket.send(data);
-        };
 
-        webSocket.onmessage = (event) => {
-          const receivedData = JSON.parse(event.data);
-          const { subscriptionId, data } = receivedData;
-          const {
-            tempIn,
-            tempOut,
-            humIn,
-            humOut,
-            pressure,
-            rainfall,
-            windDirection,
-            windSpeed,
-            windAvg,
-          } = data;
-          setTempIn(tempIn[0][1]);
-          setTempOut(tempOut[0][1]);
-          setHumIn(humIn[0][1]);
-          setHumOut(humOut[0][1]);
-          setPressure(pressure[0][1]);
-          setRainfall(rainfall[0][1]);
-          setWindDirection(windDirection[0][1]);
-          setWindSpeed(windSpeed[0][1]);
-          setWindAvg(windAvg[0][1]);
-        };
+          webSocket.onmessage = (event) => {
+            const receivedData = JSON.parse(event.data);
+            const { subscriptionId, data } = receivedData;
+            const {
+              tempIn,
+              tempOut,
+              humIn,
+              humOut,
+              pressure,
+              rainfall,
+              windDirection,
+              windSpeed,
+              windAvg,
+            } = data;
+            setTempIn(tempIn[0][1]);
+            setTempOut(tempOut[0][1]);
+            setHumIn(humIn[0][1]);
+            setHumOut(humOut[0][1]);
+            setPressure(pressure[0][1]);
+            setRainfall(rainfall[0][1]);
+            setWindDirection(windDirection[0][1]);
+            setWindSpeed(windSpeed[0][1]);
+            setWindAvg(windAvg[0][1]);
+          };
 
-        webSocket.onclose = () => {
-          console.log("Connection closed!");
-        };
+          webSocket.onclose = () => {
+            console.log("Connection closed!");
+          };
 
-        // Clean up function
-        return () => {
-          webSocket.close();
-        };
+          return () => {
+            webSocket.close();
+          };
+        } else {
+          console.error("Setting data is null or empty");
+        }
       } catch (error) {
-        // Manejo de errores si la promesa se rechaza
+        console.log(error)
       }
     };
     fetchLoginData();
   }, []);
-
   return (
     <div className="flex flex-col">
       <div className="flex justify-between mx-4">
@@ -114,7 +114,7 @@ export function Footer() {
           </div>
           <div className="flex gap-2">
             <p className="text-xl text-[#5f6281]">Direction:</p>
-            <p className="text-xl text-white">{windDirection}"</p>
+            <p className="text-xl text-white">{windDirection}</p>
           </div>
           <div className="flex gap-2">
             <p className="text-xl text-[#5f6281]">Speed:</p>

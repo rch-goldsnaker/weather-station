@@ -3,7 +3,7 @@ import { startTransition, useTransition } from "react";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { createSetting, readSetting } from "@/components/modals/actions";
+import { createSetting } from "@/actions";
 import { toast } from "../ui/use-toast";
 import * as z from "zod";
 import {
@@ -18,13 +18,6 @@ import {
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 
 const FormSchema = z.object({
   entityType: z.string({
@@ -76,7 +69,7 @@ export const SettingForm = () => {
           title: "You submitted the following values:",
           description: (
             <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">Successfully Login</code>
+              <code className="text-white">Successfully Send</code>
             </pre>
           ),
         });
@@ -85,7 +78,7 @@ export const SettingForm = () => {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 px-3 md:px-0">
         <FormField
           control={form.control}
           name="entityType"
@@ -129,57 +122,6 @@ export const SettingForm = () => {
                 '784f394c-42b6-435a-983c-b7beff2784f9'
               </FormDescription>
               <FormMessage className="flex justify-start" />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="keys"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex justify-start">Keys</FormLabel>
-              <FormControl>
-                <Input
-                  className="border-blue-950"
-                  placeholder="temperature,humidity"
-                  {...field}
-                  type="string"
-                  onChange={field.onChange}
-                />
-              </FormControl>
-              <FormDescription>
-                A string value representing the comma-separated list of
-                telemetry keys. If keys are not selected, the result will return
-                all latest timeseries. For example, 'temperature,humidity'.
-              </FormDescription>
-              <FormMessage className="flex justify-start" />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="useStrictDataTypes"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>UseStrictDataTypes</FormLabel>
-              <Select onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="enables" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="true">enables</SelectItem>
-                  <SelectItem value="false">disables</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                Enables/disables conversion of telemetry values to strings.
-                Conversion is enabled by default. Set parameter to 'true' in
-                order to disable the conversion.
-              </FormDescription>
-              <FormMessage />
             </FormItem>
           )}
         />

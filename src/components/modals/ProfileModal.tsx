@@ -1,5 +1,3 @@
-"use client";
-import React from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -15,9 +13,6 @@ import { ProfileForm } from "../forms/ProfileForm";
 import { User } from "lucide-react";
 
 export function ProfileModal() {
-  const handleOpenChange = (newOpen) => {
-    console.log("Dialog open state changed to:", newOpen);
-  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -28,7 +23,7 @@ export function ProfileModal() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Profile</DialogTitle>
           <DialogDescription>
             View your profile information below.
           </DialogDescription>

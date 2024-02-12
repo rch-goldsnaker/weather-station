@@ -1,5 +1,3 @@
-"use client";
-import React from "react";
 import {
   Drawer,
   DrawerClose,
@@ -33,7 +31,7 @@ export function ProfileDrawer() {
         <ProfileForm />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
-            <Button variant="default">Cancel</Button>
+            <Button variant="default">Close</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

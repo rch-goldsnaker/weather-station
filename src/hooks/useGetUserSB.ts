@@ -1,5 +1,13 @@
+'use client'
 import { useEffect, useState } from 'react';
-import { readUserSession } from '@/app/auth/actions/client';
+import createSupabaseClientClient from "@/lib/supabase/client";
+import { unstable_noStore as noStore } from "next/cache";
+
+export async function readUserSession() {
+  noStore();
+  const supabase = await createSupabaseClientClient();
+  return supabase.auth.getSession();
+}
 
 export function useGetUserSB() {
   const [userInfo, setUserInfo] = useState<any>(null);
@@ -11,7 +19,7 @@ export function useGetUserSB() {
         const { error, data } = await readUserSession();
         setUserInfo(data);
       } catch (err) { 
-        setError(err);
+        setError(error);
         console.log('error', err);
       }
     };

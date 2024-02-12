@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { Footer, Header, Navbar } from "../components";
 import SplineComponent from "../components/SplineComponent";
-import readUserSession from "./auth/actions/server";
+import readUserSession from "@/actions";
 
 export default async function Home() {
   const { data } = await readUserSession();

@@ -1,9 +1,8 @@
 import React from "react";
 import { AuthForm } from "../../components/forms/AuthForm";
-import readUserSession from "@/app/auth/actions/server";
+import readUserSession from "@/actions";
 import { redirect } from "next/navigation";
 import { Icons } from "@/components/icons";
-import Link from "next/link";
 
 export default async function page() {
   const { data } = await readUserSession();

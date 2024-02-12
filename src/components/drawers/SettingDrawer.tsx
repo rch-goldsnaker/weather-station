@@ -1,5 +1,3 @@
-'use client'
-import React from "react";
 import {
   Drawer,
   DrawerClose,
@@ -11,16 +9,10 @@ import {
   DrawerTrigger,
 } from "../ui/drawer";
 import { Button } from "../ui/button";
-import { ProfileForm } from "../forms/ProfileForm";
 import { Settings, User } from "lucide-react";
+import { SettingForm } from "../forms/SettingForm";
 
 export function SettingDrawer() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpenChange = (newOpen) => {
-    console.log("Dialog open state changed to:", newOpen);
-  };
-
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -30,17 +22,16 @@ export function SettingDrawer() {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>Edit profile</DrawerTitle>
+          <DrawerTitle>Setting</DrawerTitle>
           <DrawerDescription>
-            Make changes to your profile here. Click save when you're done.
+            Here you can adjust your telemetry settings to connect to
+            ThingsBoard:
           </DrawerDescription>
         </DrawerHeader>
-        {/* <ProfileForm className="px-4" /> */}
+        <SettingForm />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
-            <Button variant="outline" onClick={() => setOpen(true)}>
-              Cancel
-            </Button>
+            <Button variant="destructive">Cancel</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
