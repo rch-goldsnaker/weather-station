@@ -27,6 +27,7 @@ export async function signInWithOAuthGitHub() {
       redirectTo: getURL(),
     },
   });
+  console.log(getURL())
   return result;
 }
 
