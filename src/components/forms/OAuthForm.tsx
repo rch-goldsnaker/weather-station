@@ -2,19 +2,29 @@
 import { Button } from "@/components/ui/button";
 import React, { useTransition } from "react";
 import { Icons } from "@/components/icons";
-import { cn } from "@/lib/utils";
-// import { signInWithOAuthGitHub } from "@/app/auth/actions/client";
 import { toast } from "../ui/use-toast";
 
 import createSupabaseClientClient from "@/lib/supabase/client";
 
+const getURL = () => {
+  let url =
+    process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+    'http://localhost:3000/auth/callback'
+  // Make sure to include `https://` when not localhost.
+  url = url.includes('http') ? url : `https://${url}`
+  // Make sure to include a trailing `/`.
+  url = url.charAt(url.length - 1) === '/' ? url : `${url}/`
+  return url
+}
 
 export async function signInWithOAuthGitHub() {
   const supabase = await createSupabaseClientClient();
   const result = await supabase.auth.signInWithOAuth({
     provider: "github",
     options: {
-      redirectTo: `${location.origin}/auth/callback`,
+      // redirectTo: `${location.origin}/auth/callback`,
+      redirectTo: getURL(),
     },
   });
   return result;
