@@ -24,7 +24,7 @@ export async function signInWithOAuthGitHub() {
     provider: "github",
     options: {
       // redirectTo: `${location.origin}/auth/callback`,
-      redirectTo: getURL(),
+      redirectTo: "https://weather-station-8k6eh12iz-rch-goldsnaker.vercel.app/auth/callback",
     },
   });
   console.log(getURL())
