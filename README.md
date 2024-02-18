@@ -7,8 +7,9 @@
 1. 🤖 [Introduction](#introduction)
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
-7. 🚀 [Deploy](#deploy)
+4. 💻 [Youtube tutorial](#youtube)
+5. 🤸 [Quick Start](#quick-start)
+6. 🚀 [Deploy](#deploy)
    
 ## <a name="introduction">🤖 Introduction</a>
 
@@ -40,6 +41,9 @@ This project aims to develop a versatile IoT dashboard capable of handling senso
 
 👉 Deployment on Vercel for easy accessibility.
 
+## <a name="youtube">💻 Youtube tutorial</a>
+
+See tutorial video [here](https://youtu.be/-OBl3Ui-sNc?si=qvDpTz9kCGNXza1s)
 
 ## <a name="quick-start">🤸 Quick Start</a>
 
@@ -66,6 +70,22 @@ Install the project dependencies using npm:
 
 ```bash
 npm install
+```
+
+**Set Up Environment Variables**
+
+Create a new file named .env.local in the root of your project and add the following content:
+
+```env
+# THINGSBOARD
+TB_API_URL=
+TB_USERNAME=
+TB_PASSWORD=
+NEXT_PUBLIC_TB_WS_URL=
+
+# SUPABASE
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
 
 **Running the Project**
