@@ -31,7 +31,7 @@ export function Navbar() {
               <SettingDrawer />
             </li>
             <li>
-              <Link href={"https://github.com/rch-goldsnaker"} target="_blank">
+              <Link href={"https://github.com/rch-goldsnaker/weather-station"} target="_blank">
                 <Button variant={"ghost"} className="gap-1">
                   <Icons.gitHub className="h-5 w-5" />
                   <p className="hidden md:block">Github</p>
