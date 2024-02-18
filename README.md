@@ -17,19 +17,19 @@ This project aims to develop a versatile IoT dashboard capable of handling senso
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
-👉 Next.js
+💎 Next.js
 
-👉 Supabase
+💎 Supabase
 
-👉 Typescript
+💎 Typescript
 
-👉 Tailwind
+💎 Tailwind
 
-👉 Shadcn
+💎 Shadcn
 
-👉 Thingsboard.
+💎 Thingsboard.
 
-👉 Spline
+💎 Spline
 
 ## <a name="features">🔋 Features</a>
 
