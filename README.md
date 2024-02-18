@@ -1,6 +1,6 @@
 ## <a name="introduction">💻 IoT Dashboard Weather Station</a>
 
-<img src="https://github.com/rch-goldsnaker/weather-app/blob/main/public/screen.png" alt="Project Banner">
+<img src="https://github.com/rch-goldsnaker/weather-station/blob/main/public/home.png" alt="Project Banner">
 
 ## 📋 <a name="table">Table of Contents</a>
 
@@ -78,4 +78,4 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 
 ## <a name="deploy">🚀 Deploy</a>
 
-See Online [here](https://weather-9wqqxxoxc-rch-goldsnaker.vercel.app)
+See Online [here](https://weather-station-six.vercel.app/)
